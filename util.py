@@ -1,10 +1,12 @@
 import re
 import datetime
 
-def calcualte_min_hours_and_minutes(time_value):
+from config import ui_config
+
+def calculate_minimum_possible_time(time_value):
     
     hours = time_value.GetHour()
-    minutes = time_value.GetMinute() + 3
+    minutes = time_value.GetMinute() + ui_config["min_possible_minutes_tolerance"]
     if minutes >= 60:
         minutes = minutes % 60
         hours = hours + 1
@@ -20,6 +22,9 @@ def are_email_addresses_valid(email_addresses):
             return False
 
     return True
+
+def convert_datetime_to_text(datetime):
+    return datetime.strftime('%Y-%m-%d %H:%M:00')
 
 def convert_to_python_datetime(wx_date, wx_time):
     
@@ -43,7 +48,7 @@ def sync_date_pickup_element(wx, date_pickup):
 
 def sync_time_pickup_element(wx, time_pickup):
     time_now_value = get_Wx_datetime_now(wx)
-    hours, minutes = calcualte_min_hours_and_minutes(time_now_value)
+    hours, minutes = calculate_minimum_possible_time(time_now_value)
     time_now_value.SetHour(hours)
     time_now_value.SetMinute(minutes)
     time_now_value.SetSecond(0)
