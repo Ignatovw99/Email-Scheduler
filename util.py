@@ -23,7 +23,7 @@ def are_email_addresses_valid(email_addresses):
 
     return True
 
-def convert_datetime_to_text(datetime):
+def convert_datetime_to_string(datetime):
     return datetime.strftime('%Y-%m-%d %H:%M:00')
 
 def convert_to_python_datetime(wx_date, wx_time):
