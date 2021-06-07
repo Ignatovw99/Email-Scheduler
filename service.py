@@ -2,6 +2,9 @@ import database as db
 import datetime
 
 import smtplib
+import schedule
+import _thread
+import time
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -35,3 +38,17 @@ def send_emails():
         session.sendmail(sender_address, email.recipients, email_message.as_string())
 
     session.quit()
+
+def setup_schedule_thread():
+
+    schedule.every().minute.at(":00").do(send_emails)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+def init_schedule_job():
+    try:
+        _thread.start_new_thread(setup_schedule_thread, ())
+    except:
+        print("Error: unable to start thread")
